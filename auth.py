@@ -16,7 +16,7 @@ from functools import wraps
 load_dotenv()
 
 auth = Flask(__name__)
-CORS(auth)
+CORS(auth, resources={r"/*": {"origins": "*"}})
 
 auth.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:yezu@localhost:5432/cheemba'
 auth.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -68,7 +68,7 @@ class Notifications(db.Model):
     user = db.relationship('User', backref=db.backref('notifications', lazy=True))
 
 with auth.app_context():
-    # db.drop_all()
+    db.drop_all()
     db.create_all()
 
 @auth.route('/verify-phone', methods=['POST'])
